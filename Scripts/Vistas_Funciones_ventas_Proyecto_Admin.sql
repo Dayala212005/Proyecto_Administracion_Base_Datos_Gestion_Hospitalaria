@@ -161,6 +161,8 @@ ON PACIENTE.id_paciente = PACIENTE_TELEFONO.id_paciente;
 GO
 SELECT * FROM dbo.VW_TelefonoPaciente;
 GO
+
+
 USE GestionHospitalaria
 GO
 CREATE OR ALTER VIEW VW_FActuraCita 
