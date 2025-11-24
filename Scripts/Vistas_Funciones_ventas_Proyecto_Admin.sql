@@ -161,3 +161,23 @@ ON PACIENTE.id_paciente = PACIENTE_TELEFONO.id_paciente;
 GO
 SELECT * FROM dbo.VW_TelefonoPaciente;
 GO
+USE GestionHospitalaria
+GO
+CREATE OR ALTER VIEW VW_FActuraCita 
+AS
+SELECT 
+FACTURA_CITA.numero_factura 'Numero de factura',
+PACIENTE.nombre 'Nombre del Paciente',
+MEDICO.nombre 'Medico que atendio la cita',
+DETALLE_TRATAMIENTO.descripcion 'Descripcion de tratamiento',
+MEDICAMENTO.nombre 'Mediamento usado',
+FACTURA_CITA.fecha_cita 'Fecha de realizacion de cita',
+FACTURA_CITA.total_costo 'Costo total de la cita'
+FROM Cita.FACTURA_CITA
+INNER JOIN Paciente.PACIENTE ON PACIENTE.id_paciente = FACTURA_CITA.id_paciente
+INNER JOIN Medico.MEDICO ON MEDICO.id_medico = FACTURA_CITA.id_medico
+INNER JOIN Tratamiento.DETALLE_TRATAMIENTO ON DETALLE_TRATAMIENTO.id_factura_cita = FACTURA_CITA.id_factura_cita
+INNER JOIN Tratamiento.DETALLEXMEDICAMENTO ON DETALLEXMEDICAMENTO.id_tratamiento = DETALLE_TRATAMIENTO.id_tratamiento
+INNER JOIN Catalogo.MEDICAMENTO ON MEDICAMENTO.id_medicamento = DETALLEXMEDICAMENTO.id_medicamento;
+
+
