@@ -33,3 +33,7 @@ SELECT
     client_ip         AS IPCliente            
 FROM sys.fn_get_audit_file('C:\audits\*', DEFAULT, DEFAULT);
 GO
+
+SELECT * FROM vw_AuditoriaEventos
+
+EXEC USP_RegistrarPaciente 'Pepito Juancito Perez Lopez','7781220','123456','pjuancito@gmail.com','77788811'
