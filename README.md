@@ -1,2 +1,0 @@
-# Proyecto_Administracion_Base_Datos_Gestion_Hospitalaria
-Proyecto de Administracion de Base de Datos
