@@ -181,3 +181,4 @@ SELECT * FROM dbo.VW_Roles
 GO
 
 --Ver fallos de inicio de sesión en el log
+EXEC xp_readerrorlog 0, 1, N'Login failed', NULL;
