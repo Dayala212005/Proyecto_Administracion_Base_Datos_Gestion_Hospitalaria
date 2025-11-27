@@ -25,6 +25,10 @@ GRANT CREATE SEQUENCE TO r_admin;
 GRANT ALTER TO r_admin;
 GRANT VIEW DEFINITION TO r_admin;
 GRANT SELECT TO r_admin;
+GRANT EXECUTE ON OBJECT::dbo.USP_ImportarPaciente TO r_admin;
+GRANT EXECUTE ON OBJECT::dbo.USP_ImportarMedicamentos TO r_admin;
+GRANT EXECUTE ON OBJECT::dbo.USP_ImportarMedicos TO r_admin;
+
 
 CREATE ROLE r_backup;
 
