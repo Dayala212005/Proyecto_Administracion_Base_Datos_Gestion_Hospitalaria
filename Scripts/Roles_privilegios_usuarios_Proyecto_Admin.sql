@@ -56,6 +56,8 @@ GRANT EXECUTE ON OBJECT::dbo.USP_ImportarPaciente TO r_admin;
 GRANT EXECUTE ON OBJECT::dbo.USP_ImportarMedicamentos TO r_admin;
 GRANT EXECUTE ON OBJECT::dbo.USP_ImportarMedicos TO r_admin;
 
+DENY DELETE, UPDATE, INSERT ON SCHEMA::Paciente TO r_admin;
+DENY DELETE, UPDATE, INSERT ON SCHEMA::Medico TO r_admin;
 
 CREATE ROLE r_backup;
 
@@ -64,6 +66,9 @@ USE master;
 GRANT BACKUP DATABASE TO l_backup;
 GRANT BACKUP LOG TO l_backup;
 ALTER SERVER ROLE dbcreator ADD MEMBER l_backup;
+
+DENY INSERT, UPDATE, DELETE ON DATABASE::GestionHospitalaria TO r_backup;
+DENY ALTER, DROP ON DATABASE::GestionHospitalaria TO r_backup;
 
 USE GestionHospitalaria;
 
@@ -76,6 +81,9 @@ GRANT SELECT ON OBJECT::dbo.VW_Paciente TO r_recepcionista;
 GRANT SELECT ON OBJECT::dbo.VW_EmailPaciente TO r_recepcionista;
 GRANT SELECT ON OBJECT::dbo.VW_TelefonoPaciente TO r_recepcionista;
 
+DENY INSERT, UPDATE, DELETE ON DATABASE::GestionHospitalaria TO r_recepcionista;
+DENY ALTER, DROP ON DATABASE::GestionHospitalaria TO r_recepcionista;
+
 CREATE ROLE r_admin_medico;
 
 GRANT EXECUTE ON OBJECT::dbo.USP_RegistrarMedico TO r_admin_medico;
@@ -85,10 +93,16 @@ GRANT SELECT ON OBJECT::dbo.VW_Medico TO r_admin_medico;
 GRANT SELECT ON OBJECT::dbo.VW_EmailMedicos TO r_admin_medico;
 GRANT SELECT ON OBJECT::dbo.VW_TelefonoMedicos TO r_admin_medico;
 
+DENY INSERT, UPDATE, DELETE ON DATABASE::GestionHospitalaria TO r_admin_medico;
+DENY ALTER, DROP ON DATABASE::GestionHospitalaria TO r_admin_medico;
+
 CREATE ROLE r_farmacia;
 
 GRANT EXECUTE ON OBJECT::dbo.USP_RegistrarMedicamento TO r_farmacia;
 GRANT SELECT ON OBJECT::dbo.VW_Medicamento TO r_farmacia;
+
+DENY INSERT, UPDATE, DELETE ON DATABASE::GestionHospitalaria TO r_farmacia;
+DENY ALTER, DROP ON DATABASE::GestionHospitalaria TO r_farmacia;
 
 CREATE ROLE r_cajero;
 
@@ -97,6 +111,9 @@ GRANT SELECT ON OBJECT::dbo.FN_FacturasPorFechas TO r_cajero;
 GRANT SELECT ON OBJECT::dbo.VW_Paciente     TO r_cajero;
 GRANT SELECT ON OBJECT::dbo.VW_Medico       TO r_cajero;
 GRANT SELECT ON OBJECT::dbo.VW_Medicamento  TO r_cajero;
+
+DENY INSERT, UPDATE, DELETE ON DATABASE::GestionHospitalaria TO r_cajero;
+DENY ALTER, DROP ON DATABASE::GestionHospitalaria TO r_cajero;
 
 CREATE ROLE r_analista;
 
@@ -109,6 +126,10 @@ GRANT SELECT ON OBJECT::dbo.VW_EmailMedicos     TO r_analista;
 GRANT SELECT ON OBJECT::dbo.VW_TelefonoMedicos  TO r_analista;
 GRANT SELECT ON OBJECT::dbo.VW_Indices          TO r_analista;
 GRANT SELECT ON OBJECT::dbo.FN_FacturasPorFechas TO r_analista;
+
+DENY INSERT, UPDATE, DELETE ON DATABASE::GestionHospitalaria TO r_analista;
+DENY EXECUTE ON DATABASE::GestionHospitalaria TO r_analista;
+DENY ALTER, DROP ON DATABASE::GestionHospitalaria TO r_analista;
 
 --usuarios
 
@@ -158,3 +179,5 @@ GO
 
 SELECT * FROM dbo.VW_Roles
 GO
+
+--Ver fallos de inicio de sesión en el log
