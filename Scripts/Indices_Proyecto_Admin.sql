@@ -26,3 +26,39 @@ END;
 
 EXEC sp_ReconstruirIndices;
 SELECT * FROM dbo.VW_Indices;
+
+CREATE VIEW vw_IndicesDetalles AS
+SELECT  
+    t.name AS Tabla,
+    i.name AS Indice,
+    i.index_id AS IdIndice,
+    i.type_desc AS TipoIndice,
+    i.is_unique AS EsUnico,
+    i.is_primary_key AS EsPrimaryKey,
+    i.is_unique_constraint AS EsUniqueConstraint,
+    STUFF((
+        SELECT ', ' + c.name
+        FROM sys.index_columns ic2
+        JOIN sys.columns c 
+            ON ic2.object_id = c.object_id 
+           AND ic2.column_id = c.column_id
+        WHERE ic2.object_id = i.object_id
+          AND ic2.index_id = i.index_id
+          AND ic2.is_included_column = 0
+        ORDER BY ic2.key_ordinal
+        FOR XML PATH(''), TYPE).value('.', 'nvarchar(max)'),1,2,'') AS ColumnasClave,
+    STUFF((
+        SELECT ', ' + c.name
+        FROM sys.index_columns ic2
+        JOIN sys.columns c 
+            ON ic2.object_id = c.object_id 
+           AND ic2.column_id = c.column_id
+        WHERE ic2.object_id = i.object_id
+          AND ic2.index_id = i.index_id
+          AND ic2.is_included_column = 1
+        FOR XML PATH(''), TYPE).value('.', 'nvarchar(max)'),1,2,'') AS ColumnasIncluidas
+FROM sys.indexes i
+JOIN sys.tables t 
+     ON i.object_id = t.object_id
+WHERE i.index_id > 0;   -- excluye el heap
+GO
