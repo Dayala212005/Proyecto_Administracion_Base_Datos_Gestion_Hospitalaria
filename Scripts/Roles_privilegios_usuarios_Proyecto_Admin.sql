@@ -36,6 +36,7 @@ CREATE ROLE r_backup;
 USE master;
 GRANT BACKUP DATABASE TO l_backup;
 GRANT BACKUP LOG TO l_backup;
+ALTER SERVER ROLE dbcreator ADD MEMBER l_backup;
 
 USE GestionHospitalaria;
 
